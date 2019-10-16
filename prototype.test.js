@@ -1,6 +1,13 @@
 describe('Protype', () => {
   it('Function constructor', () => {
-    function User(name) {}
+    function User(name) {
+      return {
+        name,
+        sayHello: function () {
+          return `Hello, ${this.name}`
+        }
+      }
+    }
     const user1 = new User('user1');
     const user2 = new User('user2');
 
@@ -11,11 +18,24 @@ describe('Protype', () => {
     expect(user1.sayHello !== user2.sayHello).toBe(true);
   });
 
+  //done
+
   it('Prototype', () => {
-    function User(name) {}
+    function User(name) {
+      return {
+        name: name
+      }
+    }
+
+    User.prototype = {
+      sayHello : function () {
+        return `Hello ${this.name}`
+      }
+    };
 
     const user1 = new User('user1');
     const user2 = new User('user2');
+
 
     expect(user1.name).toBe('user1');
     expect(user2.name).toBe('user2');

@@ -23,7 +23,7 @@ describe("Data types", () => {
 
       expect(FALSE && TRUE).toBe(false);
       expect(FALSE || TRUE).toBe(true);
-      expect(FALSE != TRUE).toBe(true);
+      expect(FALSE !== TRUE).toBe(true);
       expect(!!FALSE).toBe(false);
     });
 

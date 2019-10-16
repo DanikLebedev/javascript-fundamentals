@@ -1,5 +1,11 @@
 describe('', () => {
   test('Should return  composition of two functions', () => {
+    function compose(f1, f2) {
+      return function (x) {
+        return f1(f2(x));
+      }
+    }
+
     function add5(x) {
       return x + 5;
     }
@@ -8,17 +14,40 @@ describe('', () => {
       return x * 3;
     }
 
-    expect(/* compose(  add5, mul3)(2) */).toBe(add5(mul3(2)));
+    expect(compose(add5, mul3)(2)).toBe(add5(mul3(2)));
   });
+
+  //done
 
   test('Should create new user with unique number identifier using increment', () => {
-    expect(/* createUser("Ivan") */).toStrictEqual({ name: 'Ivan', id: 1 });
-    expect(/* createUser("Petr").name */).toBe('Petr');
-    expect(/* createUser("Anna").id */).toBe(3);
+    function createUser(name) {
+      return {
+        name: name,
+        id: function IncrementId() {
+          if (!this.latestId) {
+            this.latestId = 1
+          } else {
+            this.latestId++
+          } return this.latestId
+
+        }()
+      }
+    }
+
+    expect(createUser("Ivan")).toStrictEqual({ name: 'Ivan', id: 1 });
+    expect(createUser("Petr").name).toBe('Petr');
+    expect(createUser("Anna").id).toBe(3);
   });
 
+  // done
+
   test('Should create function that each time return new value incremented by incrementValue and start from start', () => {
-    function createIncrementor(start, incrementValue) {}
+    function createIncrementor(start, incrementValue) {
+        return function () {
+          start += incrementValue;
+          return start
+        }
+    }
     const nextFrom10By7 = createIncrementor(10, 7);
     expect(nextFrom10By7()).toBe(10);
     expect(nextFrom10By7()).toBe(17);
@@ -28,17 +57,20 @@ describe('', () => {
   test('Fix me. Function creation inside cycle. Find 2 different solutions', () => {
     function solution1(from, to) {
       const result = [];
-      for (var i = from; i <= to; i++) {
-        result.push(function() {
-          return i;
-        });
+      return function () {
+        for (let i = from; i <= to; i++) {
+          result.push(function() {
+            return i;
+          });
+        }
+        return result;
       }
-      return result;
-    }
+      }
+
 
     function solution2(from, to) {
       const result = [];
-      for (var i = from; i <= to; i++) {
+      for (let i = from; i <= to; i++) {
         result.push(function() {
           return i;
         });
@@ -101,13 +133,21 @@ describe('', () => {
   });
 
   test('Should create multiply function', () => {
-    let mul5; // = multiply(5);
-    let mul20; // = multiply(20);
+    let mul5 = multiply(5);
+    let mul20  = multiply(20);
+
+    function multyply(n){
+      return function (num) {
+        return n * num
+      }
+    }
 
     expect(mul5(1)).toBe(5);
     expect(mul5(7)).toBe(35);
     expect(mul20(3)).toBe(60);
   });
+
+  //done
 
   test('Calculate function invocation', () => {
     function fn() {
@@ -115,6 +155,7 @@ describe('', () => {
     }
 
     function calcCall(func) {
+
       // TODO: implement
       return [func, () => 0];
     }
