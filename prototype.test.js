@@ -21,14 +21,13 @@ describe('Protype', () => {
   //done
 
   it('Prototype', () => {
-    class User {
-      constructor(name) {
-        this.name = name;
-      }
-      sayHello(){
-        return `Hello, ${this.name}`
-      }
+    function User(name) {
+      this.name = name;
     }
+
+    User.prototype.sayHello = function () {
+      return `Hello, ${this.name}`
+    };
 
     const user1 = new User('user1');
     const user2 = new User('user2');
@@ -39,6 +38,8 @@ describe('Protype', () => {
     expect(user2.sayHello()).toBe('Hello, user2');
     expect(user1.sayHello === user2.sayHello).toBe(true);
   });
+
+  //done
 
   it('Create class ArticleList with 2 methods add and articleCount', () => {
     // TODO: implement
@@ -74,10 +75,23 @@ describe('Protype', () => {
     */
 
     // TODO: implement
-    function Component() {
+   class Component {
+     constructor(object) {
+        this.data = object.data
+     }
 
+     render() {
+       return ""
+     }
 
-    }
+     getData() {
+       return this.data
+     }
+
+     setData(object) {
+       Object.assign(this.data, object);
+     }
+   }
 
 
     /*
@@ -90,7 +104,18 @@ describe('Protype', () => {
 
 
     // TODO: implement
-    function UserComponent() {}
+    class UserComponent extends Component {
+     render() {
+       if (this.data.name === undefined) this.data.name = "guest";
+       return `${this.data.msg}, ${this.data.name}!`
+     }
+     login(name) {
+      this.data.name = name;
+     }
+     logout() {
+       this.data.name = undefined;
+     }
+    }
 
     const component = new Component({
       data: {
@@ -107,8 +132,8 @@ describe('Protype', () => {
     component.setData({
       name: 'Bob'
     });
-    expect(component1.render()).toBe('');
-    expect(component1.getData()).toEqual({
+    expect(component.render()).toBe('');
+    expect(component.getData()).toEqual({
       name: 'Bob',
       msg: 'Hello'
     });
@@ -128,18 +153,41 @@ describe('Protype', () => {
     expect(userComponent.render()).toBe('Greetings, Tom!');
   });
 
+  //done
+
   it('Should extend Child class from Parent ', () => {
     // Component and  UserComponent has requirement from previous test
 
     // TODO: implement
-    function extend(Child, Parent) {}
+    function extend(Child, Parent) {
+      const extendItem = function() {};
+      extendItem().prototype = Parent.prototype;
+      Child.prototype = new extendItem();
+      Child.prototype.constructor = Child;
+      Child.superclass = Parent.prototype;
+    }
 
     // TODO: implement
-    function Component() {}
+    function Component(obj) {
+      this.data = obj.data;
+    }
+
+    Component.prototype.render = () => "";
+    Component.prototype.getData = () => this.data;
+    Component.prototype.setData = (obj) => {Object.assign(this.data,obj)};
 
     // TODO: implement
     // NOTE: for inheritance should be used extend method
-    function UserComponent() {}
+    function UserComponent(obj) {
+      this.data = obj.data;
+    }
+
+    UserComponent.prototype.render = () => {
+      if (this.data.name === undefined) this.data.name = "guest";
+      return `${this.data.msg}, ${this.data.name}`;
+    };
+    UserComponent.prototype.login = (name) => this.data.name = name;
+    UserComponent.prototype.logout = () =>  this.data.name = undefined;
 
     extend(UserComponent, Component);
 
@@ -183,10 +231,61 @@ describe('Protype', () => {
 
   it('Should use Class declaration for Component and UserComponent', () => {
     // TODO implement Component and UserComponent from previous tasks using Class declaration
+    class Component {
+      constructor(object) {
+        this.data = object.data
+      }
+
+      render() {
+        return ""
+      }
+
+      getData() {
+        return this.data
+      }
+
+      setData(object) {
+        Object.assign(this.data, object);
+      }
+    }
+
+    class UserComponent extends Component {
+      render() {
+        if (this.data.name === undefined) this.data.name = "guest";
+        return `${this.data.msg}, ${this.data.name}!`
+      }
+      login(name) {
+        this.data.name = name;
+      }
+      logout() {
+        this.data.name = undefined;
+      }
+    }
+
+    const component = new Component({
+      data: {
+        name: 'Tom',
+        msg: 'Hello'
+      }
+    });
+
+    const userComponent = new UserComponent({
+      data: {
+        name: 'Bob',
+        msg: 'Hello'
+      }
+    });
+
 
     // TODO: write own test, see previous task as example
-    expect(false).toBe(true);
+    expect(component.getData()).toEqual({
+      name: 'Tom',
+      msg: 'Hello'
+    });
+    expect(userComponent.render()).toBe('Hello, Bob!')
   });
+
+  //done
 
   it('Should use Object.create for extending one object from another', () => {
     // DON'T CHANGE
