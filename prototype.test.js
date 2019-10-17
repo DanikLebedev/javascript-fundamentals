@@ -160,11 +160,7 @@ describe('Protype', () => {
 
     // TODO: implement
     function extend(Child, Parent) {
-      const extendItem = function() {};
-      extendItem().prototype = Parent.prototype;
-      Child.prototype = new extendItem();
-      Child.prototype.constructor = Child;
-      Child.superclass = Parent.prototype;
+
     }
 
     // TODO: implement
