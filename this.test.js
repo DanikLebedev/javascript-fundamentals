@@ -8,7 +8,6 @@ describe('THIS', () => {
     function example() {
       return this.msg + ' ' + this.msg;
     }
-
     expect(example.call(a)).toBe('aaa aaa');
     expect(example.apply(b)).toBe('bbb bbb');
   });
