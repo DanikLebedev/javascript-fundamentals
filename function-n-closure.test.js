@@ -283,6 +283,9 @@ describe('Function and closure', () => {
     }
 
     function once(fn) {
+        return function () {
+           if (!callsCount) return fn();
+        }
       // TODO: implement
     }
 
@@ -292,12 +295,16 @@ describe('Function and closure', () => {
     initialize();
 
     expect(callsCount).toBe(1);
+    console.log(callsCount);
   });
 
   test('Creates a function that invokes func with partials prepended to the arguments it receives. ', () => {
     function partial(fn, arg1) {
       // TODO: implement
-    }
+        return function (...arg_) {
+            return fn(arg1, ...arg_)
+            }
+        }
 
 
     //DON'T CHANGE
@@ -311,3 +318,5 @@ describe('Function and closure', () => {
     expect(add10(20)).toBe(30);
   });
 });
+
+//done
