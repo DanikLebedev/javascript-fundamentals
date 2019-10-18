@@ -13,7 +13,13 @@ describe('Objects', () => {
   });
 
   it('Creates an object composed of the picked object properties.', () => {
-    function pick(obj, props) {}
+    function pick(obj, props) {
+      let newObject = {};
+      props.forEach((n) => {
+        newObject[n] = obj[n]
+      });
+      return newObject;
+    }
     const object = { a: 1, b: '2', c: 3 };
 
     expect(pick(object, ['a', 'c'])).toStrictEqual({ a: 1, c: 3 });
@@ -26,12 +32,19 @@ describe('Objects', () => {
       secondName: 'Ivanov'
     };
 
-    const person2 = person1;
+    function clone(obj) {
+      return JSON.parse(JSON.stringify(obj));
+    }
+
+    const person3 = clone(person1);
+    const person2 = Object.assign({},person1);
     person2.firstName += ' Jr.';
 
     expect(person1.firstName).toBe('Ivan');
     expect(person2.firstName).toBe('Ivan Jr.');
     expect(person2.secondName).toBe('Ivanov');
+    expect(person3.secondName).toBe('Ivanov');
+
   });
 
   it('Performs a shallow comparison between two values to determine if they are equivalent.', () => {
@@ -39,9 +52,14 @@ describe('Objects', () => {
     const obj2 = { a: 1, b: 2 };
     const obj3 = { a: 1, b: 4 };
 
-    expect(/* compare(obj1, obj2) */).toBe(true);
-    expect(/* compare(obj1, obj3) */).toBe(false);
+    function compare(obj1, obj2) {
+      return JSON.stringify(obj1) === JSON.stringify(obj2)
+    }
+
+    expect(compare(obj1, obj2)).toBe(true);
+    expect(compare(obj1, obj3)).toBe(false);
   });
+
 
   it('Performs a deep comparison between two values to determine if they are equivalent.', () => {
     const obj1 = { a: 1, b: { a: 2 } };
