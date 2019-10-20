@@ -2,7 +2,11 @@ const PUT_ANSWER_HERE = Symbol();
 
 describe('Objects', () => {
   it('Should get the value at path of object. If the resolved value is undefined, the defaultValue is returned in its place.', () => {
-    function get(obj, path) {}
+    function get(obj, path) {
+      path.split(".").forEach(item => obj = obj[item]);
+      return obj;
+
+    }
 
     expect(get({ a: { b: { c: 3 } } }, 'a')).toStrictEqual({ b: { c: 3 } });
     expect(get({ a: { b: { c: 3 } } }, 'a.b.c')).toBe(3);
@@ -11,6 +15,8 @@ describe('Objects', () => {
       d: 2
     });
   });
+
+  //done
 
   it('Creates an object composed of the picked object properties.', () => {
     function pick(obj, props) {
@@ -60,24 +66,35 @@ describe('Objects', () => {
     expect(compare(obj1, obj3)).toBe(false);
   });
 
-
   it('Performs a deep comparison between two values to determine if they are equivalent.', () => {
     const obj1 = { a: 1, b: { a: 2 } };
     const obj2 = { a: 1, b: { a: 2 } };
 
-    expect('/* compare(obj1, obj2) */').toBe(true);
+    function compare(obj1, obj2) {
+      if (JSON.stringify(obj1) !== JSON.stringify(obj2)) {
+        return false
+      }
+      if (typeof obj1 !== typeof obj2) {
+        return false
+      }
+      for (let props in obj1) {
+        if (obj1[props] !== obj2[props]) {
+          return false
+        } return true
+      }
+    }
+    expect(compare(obj1, obj2)).toBe(true);
   });
+
+  //done
 
   it('Fix me', () => {
     function hasAccess(role) {
-      if (role == { type: 'admin' }) {
-        return true;
-      } else {
-        return false;
-      }
+      return role.type === "admin";
     }
-
     expect(hasAccess({ type: 'admin' })).toBe(true);
     expect(hasAccess({ type: 'anonymous' })).toBe(false);
   });
 });
+
+//done
