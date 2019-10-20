@@ -155,37 +155,50 @@ describe('Protype', () => {
 
   //done
 
-  it('Should extend Child class from Parent ', () => {
+  it('Should  extend Child class from Parent', () => {
     // Component and  UserComponent has requirement from previous test
 
     // TODO: implement
     function extend(Child, Parent) {
-
+        Child.prototype = Object.create(Parent.prototype);
+        Child.prototype.constructor = Child;
     }
 
     // TODO: implement
     function Component(obj) {
-      this.data = obj.data;
+      this.data = obj.data
     }
 
     Component.prototype.render = () => "";
-    Component.prototype.getData = () => this.data;
-    Component.prototype.setData = (obj) => {Object.assign(this.data,obj)};
+
+    Component.prototype.getData = function() {
+     return this.data;
+    };
+
+    Component.prototype.setData = function(obj) {
+      Object.assign(this.data,obj)
+     };
 
     // TODO: implement
     // NOTE: for inheritance should be used extend method
     function UserComponent(obj) {
-      this.data = obj.data;
+      this.data = obj.data
     }
 
-    UserComponent.prototype.render = () => {
-      if (this.data.name === undefined) this.data.name = "guest";
-      return `${this.data.msg}, ${this.data.name}`;
-    };
-    UserComponent.prototype.login = (name) => this.data.name = name;
-    UserComponent.prototype.logout = () =>  this.data.name = undefined;
-
     extend(UserComponent, Component);
+
+    UserComponent.prototype.render = function() {
+      if (this.data.name === undefined) this.data.name = "guest";
+      return `${this.data.msg}, ${this.data.name}!`;
+    };
+    UserComponent.prototype.login = function(name){
+      return this.data.name = name;
+    };
+    UserComponent.prototype.logout = function(){
+      return this.data.name = undefined;
+    };
+
+
 
     const component = new Component({
       data: {
@@ -224,6 +237,8 @@ describe('Protype', () => {
     userComponent.setData({ msg: 'Greetings' });
     expect(userComponent.render()).toBe('Greetings, Tom!');
   });
+
+  //done
 
   it('Should use Class declaration for Component and UserComponent', () => {
     // TODO implement Component and UserComponent from previous tasks using Class declaration
