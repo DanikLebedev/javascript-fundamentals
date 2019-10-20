@@ -1,10 +1,10 @@
 describe('Array', () => {
   it('Should find the position of the first occurrence', () => {
     const arr1 = [1, 5, 8, 3, 2];
-    expect(arr1[0]).toBe(1);
-    expect(arr1[2]).toBe(8);
-    expect(arr1[4]).toBe(2);
-    expect(arr1[1]).toBe(5);
+    expect(arr1.indexOf(5)).toBe(1);
+    expect(arr1.indexOf(3)).toBe(3);
+    expect(arr1.indexOf(2)).toBe(4);
+    expect(arr1.indexOf(1)).toBe(0);
 
     // TODO: Write additional its
   });
@@ -15,7 +15,7 @@ describe('Array', () => {
     let double = [1, 2, 3];
 
     expect(double.concat(double)).toStrictEqual([1, 2, 3, 1, 2, 3]);
-    expect([...double,...double]).toStrictEqual([1, 2, 3, 1, 2, 3]);
+    expect([...double, ...double]).toStrictEqual([1, 2, 3, 1, 2, 3]);
 
     // TODO: Write additional its
   });
@@ -26,6 +26,7 @@ describe('Array', () => {
     function convertToStringArr(arr) {
       return arr.map(str => String(str));
     }
+
     expect(convertToStringArr([1, 2, 3])).toStrictEqual(['1', '2', '3']);
 
     // TODO: Write additional its
@@ -34,43 +35,124 @@ describe('Array', () => {
   //done
 
   it('Should return the number of all occurrences of specified item in an array', () => {
-    expect(/* calculateOccurences([1, 2, 1, 4, 1], 1)*/).toBe(3);
+    function calculateOccurences(arr, value) {
+      let count = 0;
+      arr.forEach((item) => {
+        item === value ? count++ : count;
+
+      });
+      return count
+    }
+
+    expect(calculateOccurences([1, 2, 1, 4, 1], 1)).toBe(3);
+    expect(calculateOccurences([1, 4, 1, 4, 1], 4)).toBe(2);
 
     // TODO: Write additional its
   });
 
+  //done
+
   it('Should convert strings from specified array to uppercase', () => {
-    expect(/* toUppercase(["aaaa", "abc"])*/).toStrictEqual(['AAAA', 'ABC']);
+    function toUppercase(arr) {
+      return arr.map(item => item.toUpperCase())
+    }
+
+    expect(toUppercase(["aaaa", "abc"])).toStrictEqual(['AAAA', 'ABC']);
+    expect(toUppercase(["bbbb", "cccc"])).toStrictEqual(['BBBB', 'CCCC']);
   });
+
+  //done
 
   it('Insert an item at specified position', () => {
-    expect(/* insert([1, 2, 4], 3, 2)*/).toStrictEqual([1, 2, 3, 4]);
+    function insert(arr, pos, item) {
+      arr.splice(pos, 0, item);
+      return arr
+    }
+
+    expect(insert([1, 2, 4], 2, 3)).toStrictEqual([1, 2, 3, 4]);
   });
 
+  //done
+
   it('Should return the n last items from the specified array', () => {
-    expect(/* last([1, 2, 3, 4, 5, 6, 7], 3) */).toStrictEqual([5, 6, 7]);
+    function last(arr, index) {
+      return arr.slice(index + 1);
+    }
+
+    expect(last([1, 2, 3, 4, 5, 6, 7], 3)).toStrictEqual([5, 6, 7]);
   });
 
   it('Return the 3 largest items from integer array', () => {
-    expect(/* find3Largest([1, 3, 8, 3, 29, 11, 2, 17, 9, 1]) */).toStrictEqual(
-      [29, 11, 17]
+    function find3Largest(arr) {
+      let largestNumbers = arr.slice();
+      for(let i=0; i<=arr.length-4; i++){
+        const minNumber = largestNumbers.indexOf(Math.min(...largestNumbers));
+        largestNumbers.splice(minNumber, 1)
+      }
+      return largestNumbers;
+    }
+
+    //done
+
+
+    expect(find3Largest([1, 3, 8, 3, 29, 11, 2, 17, 9, 1])).toStrictEqual(
+        [29, 11, 17]
     );
   });
 
   it('Sort numbers array by using array method', () => {
-    expect(/* sort([2, 3, 1, 8, 4, 5] ) */).toStrictEqual([8, 5, 4, 3, 2, 1]);
+    function sort(arr) {
+      arr.sort((a, b) => b - a);
+      return arr;
+    }
+
+    function bubbleSort(arr) {
+      for (let i = 0, endI = arr.length - 1; i < endI; i++) {
+        for (let j = 0, endJ = endI - i; j < endJ; j++) {
+          if (arr[j] > arr[j + 1]) {
+            let swap = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = swap;
+          }
+        }
+      }
+      return arr.reverse();
+    }
+
+    expect(sort([2, 3, 1, 8, 4, 5])).toStrictEqual([8, 5, 4, 3, 2, 1]);
+    expect(bubbleSort([2, 3, 1, 8, 4, 5])).toStrictEqual([8, 5, 4, 3, 2, 1]);
   });
+
+  //done
 
   it('Should summarize of all items of numbers array', () => {
-    expect(/* sum([1, 5, 7, 9, 3]) */).toBe(25);
+    function sum(arr) {
+      return arr.reduce((index, item) => item + index);
+    }
+
+    expect(sum([1, 5, 7, 9, 3])).toBe(25);
   });
+
+  //done
 
   it('Should return the numbers of falsy value in the specified array', () => {
-    expect(/* getNumberOfFalsy([1, 0, "", null, "hello", "0"]) */).toBe(3);
+    function getNumberOfFalsy(arr) {
+      let count = 0;
+      arr.map((item) => item ? count++ : count);
+      return count
+    }
+
+    expect(getNumberOfFalsy([1, 0, "", null, "hello", "0"])).toBe(3);
   });
 
+  //done
+
   it('Should return an array of unique items from the specified array', () => {
-    expect(/* unique(["a", "b", "a", "c", "e", "b", "o"]) */).toStrictEqual([
+    function unique(arr) {
+      return [...new Set(arr)]
+    }
+
+    expect(unique(["a", "b", "a", "c", "e", "b", "o"])).toStrictEqual([
       'a',
       'b',
       'c',
@@ -79,17 +161,27 @@ describe('Array', () => {
     ]);
   });
 
-  it('Should return a map of grouped data by key and value selector', function() {
+  // done
+
+  it('Should return a map of grouped data by key and value selector', function () {
+    function expect(arr, key) {
+
+    }
+
     let arr = [
-      { country: 'Belarus', city: 'Brest' },
-      { country: 'Russia', city: 'Omsk' },
-      { country: 'Russia', city: 'Samara' },
-      { country: 'Belarus', city: 'Grodno' },
-      { country: 'Belarus', city: 'Minsk' },
-      { country: 'Poland', city: 'Lodz' }
+      {country: 'Belarus', city: 'Brest'},
+      {country: 'Russia', city: 'Omsk'},
+      {country: 'Russia', city: 'Samara'},
+      {country: 'Belarus', city: 'Grodno'},
+      {country: 'Belarus', city: 'Minsk'},
+      {country: 'Poland', city: 'Lodz'}
     ];
 
-    expect(/* group(arr, 'country') */).toStrictEqual([
+
+
+
+
+    expect((arr,'country')).toStrictEqual([
       ['Belarus', ['Brest', 'Grodno', 'Minsk']],
       ['Russia', ['Omsk', 'Samara']],
       ['Poland', ['Lodz']]
@@ -97,11 +189,20 @@ describe('Array', () => {
   });
 
   it('Should creates an array with all falsy values removed.', () => {
-    expect(/* compact([1, 0, null, "a"]) */).toStrictEqual([1, 'a']);
+    function compact (arr) {
+      arr.map((item, index) => (item) ? item : arr.splice(index, index + 1));
+      return arr
+    }
+
+    expect(compact([1, 0, null, "a"])).toStrictEqual([1, 'a']);
   });
 
+  //done
+
   it('Should flattens array a single level deep', () => {
-    expect(/* flatten([1, [2, [3, [4]], 5]]) */).toStrictEqual([
+    const flatten = (arr) => arr.flat(1);
+
+    expect(flatten([1, [2, [3, [4]], 5]])).toStrictEqual([
       1,
       2,
       [3, [4]],
@@ -109,8 +210,11 @@ describe('Array', () => {
     ]);
   });
 
+  //done
+
   it('Should recursively flattens array.', () => {
-    expect(/* flattenDeep([1, [2, [3, [4]], 5]]) */).toStrictEqual([
+    const flattenDeep = (arr) => arr.reduce((acc ,val) => Array.isArray(val) ? acc.concat(flattenDeep(val)): acc.concat(val),[]);
+    expect(flattenDeep([1, [2, [3, [4]], 5]])).toStrictEqual([
       1,
       2,
       3,
@@ -119,19 +223,34 @@ describe('Array', () => {
     ]);
   });
 
+  //done
+
   it('Should creates an array of unique values that are included in all given', () => {
-    expect(/* intersection([1, 2, 3, 4], [8, 3, 1, 0, 9]) */).toStrictEqual([
+    const intersection = (arr1,arr2) => {
+      return arr1.filter(value => -1 !== arr2.indexOf(value));
+    };
+    expect(intersection([1, 2, 3, 4], [8, 3, 1, 0, 9])).toStrictEqual([
       1,
       3
     ]);
   });
 
+  //done
+
   it('Should remove all elements from array that predicate returns truthy for and returns an array of the removed elements. The predicate is invoked with two arguments: (value, index).', () => {
     const arr = [1, 7, 5, 2, 8];
     const gt5 = v => v > 5;
-
-    let removed; /* remove(arr, gt5); */
+    const remove = (arr, fn) => arr.filter((item, index) => fn(item) ? arr.splice(index, 1): fn(item));
+    let removed = remove(arr ,gt5);
     expect(arr).toStrictEqual([1, 5, 2]);
     expect(removed).toStrictEqual([7, 8]);
   });
 });
+
+//done
+
+// Create Stack and Queue
+
+
+
+
