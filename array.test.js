@@ -152,7 +152,20 @@ describe('Array', () => {
       return [...new Set(arr)]
     }
 
+    function unique2(arr) {
+     return arr.filter((value, index, array) => array.indexOf(value) === index);
+
+    }
+
     expect(unique(["a", "b", "a", "c", "e", "b", "o"])).toStrictEqual([
+      'a',
+      'b',
+      'c',
+      'e',
+      'o'
+    ]);
+
+    expect(unique2(["a", "b", "a", "c", "e", "b", "o"])).toStrictEqual([
       'a',
       'b',
       'c',
@@ -164,8 +177,22 @@ describe('Array', () => {
   // done
 
   it('Should return a map of grouped data by key and value selector', function () {
-    function expect(arr, key) {
-
+    function group(arr, key) {
+      let res = [];
+      let countryList = new Set();
+      let categories = Object.keys(arr[0]).filter(item => {
+        return item !== key
+      });
+      arr.forEach(item => {
+        return countryList.add(item[key])
+      });
+      res = [... countryList].map(item => [item]);
+     countryList.forEach(item => {
+        let list = [];
+        arr.forEach(value => value[key] === item && list.push(value[ categories]));
+        res[[... countryList].indexOf(item)].push(list);
+      });
+      return res;
     }
 
     let arr = [
@@ -177,11 +204,7 @@ describe('Array', () => {
       {country: 'Poland', city: 'Lodz'}
     ];
 
-
-
-
-
-    expect((arr,'country')).toStrictEqual([
+    expect(group(arr,'country')).toStrictEqual([
       ['Belarus', ['Brest', 'Grodno', 'Minsk']],
       ['Russia', ['Omsk', 'Samara']],
       ['Poland', ['Lodz']]
